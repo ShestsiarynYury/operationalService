@@ -1,0 +1,110 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+			<h2>управление <b>категории</b></h2>
+			</div>
+			<div class="col-sm-6">
+				<a href="#addCategoryModal" class="btn btn-secondary rounded-0" data-toggle="modal" id="modalAddCategory"><span>создать категорию</span></a>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>наименование</th>
+				<th>титул</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="category : ${listCategory}">
+				<td style="display: none" th:text="${category.getIdCategory()}"></td>
+				<td th:text="${category.getName()}"></td>
+				<td th:text="${category.getTitle().getName()}"></td>
+				<td>
+					<a href="#editCategoryModal" class="edit" data-toggle="modal">редактировать</a>
+					<a href="#deleteCategoryModal" class="delete" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+	   
+<div id="addCategoryModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">добавление категории</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input class="form-control" type="text" id="nameCategory">
+						<label>титул</label>
+						<div class="input-group mb-3">
+							<select class="custom-select" id="nameTitle">
+								<option th:each="title : ${listTitle}" th:text="${title.getName()}"></option>
+						  	</select>
+						</div>
+					</div>				
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-success" data-dismiss="modal" value="Добавить" type="button" onclick="addCategory()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editCategoryModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">редактировать категорию</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input id="editNameCategory" class="form-control" type="text">
+						<label>титул</label>
+						<input id="editNameTitle" class="form-control" type="text" readonly>
+					</div>		
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-info" data-dismiss="modal" value="Сохранить" type="button" onclick="updateCategory()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteCategoryModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление категории</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteCategory()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>

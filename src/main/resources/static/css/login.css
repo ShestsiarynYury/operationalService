@@ -1,0 +1,16 @@
+#danger {
+    display : none;
+}
+h3 {
+    font-weight : bold;
+
+}
+label {
+    font-size : 12px;
+    font-weight : bold;
+}
+input[type="button"] {
+     font-size : 12px;
+     font-weight : bold;
+     width : 100%;
+}

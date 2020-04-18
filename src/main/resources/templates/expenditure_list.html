@@ -1,0 +1,37 @@
+<h2 th:if = "${type} == 'add'" style="text-align : center" th:inline="text">Создание расхода по списку для <span id="nameSubdivisionForListExpenditureModeAdd">[[${subdivisionName}]]</span></h2>
+<h2 th:if = "${type} == 'edit'" style="text-align : center" th:inline="text">Редактирование расхода по списку для <span id="nameSubdivisionForListExpenditureModeEdit">[[${subdivisionName}]]</span></h2>
+<h2 th:if = "${type} == 'delete'" style="text-align : center" th:inline="text">Удаление расхода по списку для <span id="nameSubdivisionForListExpenditureModeDelete">[[${subdivisionName}]]</span></h2>
+<div class="d-flex justify-content-end">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()" />
+</div>
+<!-- сама форма лдя расхода по списку -->
+<table th:each="categoryType : ${listCategoryType}"  style="border : 2px black solid; border-collapse : collapse; margin: 0 auto;">
+    <caption style="caption-side : top; text-align : center;" th:text="${categoryType.getName()}"></caption>
+    <thead>
+        <th style="padding : 10px; text-align : center;">наименование категории</th>
+        <th style="padding : 10px; text-align : center;">количество "по штату"</th>
+        <th style="padding : 10px; text-align : center;">количество "по списку"</th>
+    </thead>
+    <tbody>
+        <tr th:each="item : ${categoryType.getMapCategoryAndCountByExpenditure()}">
+            <td th:text="${item.key.getName()}" style="padding : 5px;"></td>
+            <td style="padding : 5px; text-align : center;" th:inline="text">
+                [[${item.value[0]}]]
+            </td>
+            <td style="padding : 5px;">
+                <input th:if="${type} == 'add'" class="form-control rounded-0" type="number" min="0" value="0" />
+                <input th:if="${type} == 'edit'" th:value="${item.value[1]}" class="form-control rounded-0" type="number" min="0" />
+                <input th:if="${type} == 'delete'" th:value="${item.value[1]}" class="form-control rounded-0" type="number" min="0" readonly />
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- -->
+<div class="d-flex justify-content-end" style="margin : 20px auto 0 auto">
+    <input th:if = "${type} == 'add'" type="button" class="btn btn-secondary rounded-0 m-1" value="создать" onclick="createExpenditureList('action')" />
+    <input th:if = "${type} == 'edit'" type="button" class="btn btn-secondary rounded-0 m-1" value="редактировать" onclick="updateExpenditureList('action')" />
+    <input th:if = "${type} == 'delete'" type="button" class="btn btn-secondary rounded-0 m-1" value="удалить" onclick="deleteExpenditureList('action')" />
+</div>
+<script type="text/javascript" th:inline="javascript">
+    alert("123");
+</script>

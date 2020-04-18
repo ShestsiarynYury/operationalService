@@ -1,0 +1,122 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+				<h2>управление <b>подразделениями</b></h2>
+			</div>
+			<div class="col-sm-6">
+				<a href="#addSubdivisionModal" class="btn btn-secondary rounded-0" data-toggle="modal" id="modalAddSubdivision"><span>создать подразделение</span></a>				
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>наименование</th>
+				<th>вышестоящий</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="subdivision : ${listSubdivision}">
+				<td style="display: none" th:text="${subdivision.getIdSubdivision()}"></td>
+				<td th:text="${subdivision.getName()}"></td>
+				<td th:text="${subdivision?.parent?.name}"></td>
+				<td>
+					<a href="#editSubdivisionModal" class="edit" data-toggle="modal" id="modalUpdateSubdivision">редактировать</a>
+					<a href="#deleteSubdivisionModal" class="delete" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+	   
+<div id="addSubdivisionModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">добавление подразделения</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-title">
+						<label>наименование</label>
+						<input class="form-control" type="text" id="nameSubdivision" />
+						<label>вышестоящий</label>
+						<div class="input-group">
+							<select class="custom-select" id="subdivisionParentName">
+								<option>root</option>
+								<option th:each="subdivision : ${listSubdivision}" th:text="${subdivision.getName()}"></option>
+							</select>
+						</div>
+					</div>		
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button" />
+					<input class="btn btn-success" data-dismiss="modal" value="Добавить" type="button" onclick="addSubdivision()" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editSubdivisionModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">редактировать подразделение</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input id="editNameSubdivision" class="form-control" required="" type="text">
+						<label>список подразделений</label>
+						<div class="input-group">
+							<select class="custom-select" id="nameParentForSubdivision">
+								<option>root</option>
+								<option th:each="subdivision : ${listSubdivision}" th:text="${subdivision.getName()}"></option>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" onclick="bindParentSubdivision()">выбрать</button>
+							</div>
+						</div>
+						<label>вышестоящий</label>
+						<input id="editNameParentSubdivision" class="form-control" readonly type="text" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button" />
+					<input class="btn btn-info" data-dismiss="modal" value="Сохранить" type="button" onclick="updateSubdivision()" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteSubdivisionModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление подразделения</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">	
+                    <p class="p-3 mb-2 bg-danger text-white">ВНИМАНИЕ!!! Все связанные расходы будут удалены</p>
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button" />
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteSubdivision()" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()" />
+</div>

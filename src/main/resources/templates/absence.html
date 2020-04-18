@@ -1,0 +1,96 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+			<h2>управление <b>причинами отсутствия</b></h2>
+			</div>
+			<div class="col-sm-6">
+				<a href="#addAbsenceModal" class="btn btn-secondary rounded-0" data-toggle="modal" id="modalAddAbsence"><span>создать причину отсутствия</span></a>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>наименование</th>
+				<th>категории</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="absence : ${listAbsence}">
+				<td style="display: none" th:text="${absence.getIdAbsence()}"></td>
+				<td th:text="${absence.getName()}"></td>
+				<td>
+					<select class="custom-select">
+						<option th:each="category : ${absence.getListCategory()}" th:text="${category.getName()}"></option>
+					</select>
+				</td>
+				<td>
+					<a href="#deleteAbsenceModal" class="delete" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+	   
+<div id="addAbsenceModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">добавление причины отсутствия</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input class="form-control" type="text" id="nameAbsence">
+						<label>список категорий</label>
+						<div class="input-group">
+							<select class="custom-select" id="nameCategoryForAbsence">
+								<option th:each="category : ${listCategory}" th:text="${category.getName()}"></option>
+							</select>
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" onclick="bindCategory()">выбрать</button>
+							</div>
+						</div>
+						<label>привязанные категории</label>
+						<div class="input-group mb-3">
+							<select class="custom-select" id="listCategory">
+						  	</select>
+						</div>
+					</div>				
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-success" data-dismiss="modal" value="Добавить" type="button" onclick="addAbsence()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteAbsenceModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление причины отсутствия</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteAbsence()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>

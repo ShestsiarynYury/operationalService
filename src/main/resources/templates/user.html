@@ -1,0 +1,184 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+			<h2>управление <b>пользователи</b></h2>
+			</div>
+			<div class="col-sm-6">
+				<a href="#addUserModal" class="btn btn-secondary rounded-0" data-toggle="modal" id="modalAddCategory"><span>создать пользователя</span></a>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>логин</th>
+				<th>пароль</th>
+				<th>роль в системе</th>
+				<th>управляемые подразделения</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${listUser}">
+				<td style="display: none" th:text="${user.getIdUser()}"></td>
+				<td th:text="${user.getName()}"></td>
+				<td th:text="${user.getPassword()}"></td>
+				<td th:text="${user.getRoleSystem()}"></td>
+				<td>
+					<div>
+						<div th:each="userSubdivision : ${user.getListUserSubdivision()}" class="input-group d-flex justify-content-center itemUserSubdivision">
+							<div class="input-group-prepend m-1" style="flex: 20; display: none;">
+								<input th:attr="value=${userSubdivision.getIdUserSubdivision()}" readonly class="form-control userSubdivisionId" type="text" />
+							</div>
+							<div class="input-group-prepend m-1" style="flex: 50;">
+								<input th:attr="value=${userSubdivision.getSubdivision().getName()}" readonly class="form-control userSubdivisionNameSubdivision" type="text" />
+							</div>
+							<div class="input-group-append m-1" style="flex: 30;">
+								<input th:attr="value=${userSubdivision.getIsEdit()==true?'редактирование':'нет'}" readonly class="form-control userSubdivisionIsEdit" type="text" />
+							</div>
+						</div>
+					</div>
+				</td>
+				<td class="d-flex justify-content-center">
+					<a href="#editUserModal" class="edit mx-1" data-toggle="modal">редактировать</a>
+					<a href="#deleteUserModal" class="delete mx-1" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+	   
+<div id="addUserModal" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">добавление пользователя</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>логин</label>
+						<input class="form-control" type="text" id="nameUser">
+						<label>пароль</label>
+						<input class="form-control" type="text" id="passwordUser">
+						<label>роль в системе</label>
+						<select class="custom-select" id="systemRoleUser">
+							<option>admin</option>
+							<option>user</option>
+						</select>			
+					</div>
+					<label>назначение подразделения : </label>
+					<div class="input-group">
+						<div class="input-group-prepend mr-2">
+							<select id="listSubdivisionModal" class="form-control rounded-0 custom-select">
+								<option selected>все</option>
+								<option th:each="subdivision : ${listSubdivision}" th:text="${subdivision.getName()}"></option>
+							</select>
+						</div>
+						<div class="input-group-append ml-auto">
+							<select id="listIsEditModal" class="form-control rounded-0 custom-select">
+								<option selected>редактирование</option>
+								<option>нет</option>
+							</select>
+						</div>
+					</div>
+					<div class="input-group d-flex justify-content-center mt-2">
+						<div class="input-group-prepend m-1">
+							<input class="btn btn-success" type="button" value="назначить" onclick="createUserSubdivision('')" />
+						</div>
+						<div class="input-group-append m-1">
+							<input class="btn btn-default" type="button" value="убрать" onclick="deleteUserSubdivision('')" />
+						</div>
+					</div>
+					<div id="setOnListUserSubdivision">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-success" data-dismiss="modal" value="Добавить" type="button" onclick="addUser()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editUserModal" class="modal fade">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">редактировать пользователя</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>логин</label>
+						<input class="form-control" type="text" id="nameUserEdit">
+						<label>пароль</label>
+						<input class="form-control" type="text" id="passwordUserEdit">
+						<label>роль в системе</label>
+						<select class="custom-select" id="systemRoleUserEdit">
+							<option>admin</option>
+							<option>user</option>
+						</select>			
+					</div>
+					<label>назначение подразделения : </label>
+					<div class="input-group">
+						<div class="input-group-prepend mr-2">
+							<select id="listSubdivisionModalEdit" class="form-control rounded-0 custom-select">
+								<option selected>все</option>
+								<option th:each="subdivision : ${listSubdivision}" th:text="${subdivision.getName()}"></option>
+							</select>
+						</div>
+						<div class="input-group-append ml-auto">
+							<select id="listIsEditModalEdit" class="form-control rounded-0 custom-select">
+								<option selected>редактирование</option>
+								<option>нет</option>
+							</select>
+						</div>
+					</div>
+					<div class="input-group d-flex justify-content-center mt-2">
+						<div class="input-group-prepend m-1">
+							<input class="btn btn-success" type="button" value="назначить" onclick="createUserSubdivision('Edit')" />
+						</div>
+						<div class="input-group-append m-1">
+							<input class="btn btn-default" type="button" value="убрать" onclick="deleteUserSubdivision('Edit')" />
+						</div>
+					</div>
+					<div id="setOnListUserSubdivisionEdit">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-info" data-dismiss="modal" value="Сохранить" type="button" onclick="updateUser()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteUserModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление категории</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteUser()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>

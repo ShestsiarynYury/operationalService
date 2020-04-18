@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+		<link href="/css/base.css" rel="stylesheet" type="text/css" />
+
+		<link href="/webjars/bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet" type="text/css" />
+		<script src="/webjars/popper.js/1.14.1/umd/popper.js"></script>
+		<script src="/webjars/jquery/3.3.1/jquery.js"></script>
+		<script src="/webjars/bootstrap/4.1.1/js/bootstrap.js"></script> 
+	</head>
+	<body>
+		<div class="container-fluid m-0 p-0 h-100" id="gui">
+			<div class="row rounded-0 bg-dark m-0 p-0" id="header" style="height: 10vh">	
+				<div class="col-2 rounded-0 m-0 p-0 d-flex align-items-center justify-content-start">
+					<ul class="list-unstyled p-0 m-0">
+						<li class="text-white"><strong>Логин : </strong><strong th:text = " ${user.getName()}"></strong></li>
+						<li class="text-white"><strong>Пароль : </strong><strong th:text = " ${user.getPassword()}"></strong></li>
+						<li class="text-white"><strong>Привилегии : </strong><strong th:text = " ${user.getRoleSystem()}"></strong></li>
+					</ul>
+				</div>
+				<div class="col-8 rounded-0 m-0 p-0">
+					<ul class="list-unstyled">
+						<li class="">
+							<div th:if = "${user.getRoleSystem()} == 'admin'" class="btn-group" role="group" aria-label="Button group with nested dropdown">
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										настройки
+									</button>
+									<div class="dropdown-menu rounded-0 position-absolute" aria-labelledby="btnGroupDrop1">
+										<label class="dropdown-item text-break text-wrap" onclick="getSubdivisionForm()">подразделения</label>
+										<label class="dropdown-item text-break text-wrap" onclick="getUserForm()">пользователи</label>
+										<label class="dropdown-item text-break text-wrap" onclick="getExpenditureForm()">расходы</label>
+										<label class="dropdown-item text-break text-wrap" onclick="getTitleForm()">титулы</label>
+										<label class="dropdown-item text-break text-wrap" onclick="getCategoryForm()">категории</label>
+										<label class="dropdown-item text-break text-wrap" onclick="getAbsenceForm()">причины отсутствия</label>
+									</div>
+								</div>			
+							</div>
+							<div th:if = "${user.getRoleSystem()} == 'admin'" class="btn-group" role="group" aria-label="Button group with nested dropdown">
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop2" type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										контроль
+									</button>
+									<div class="dropdown-menu rounded-0 position-absolute" aria-labelledby="btnGroupDrop2">
+										<label class="dropdown-item text-break text-wrap" onclick="checkExpenditureByPost()">подача текущего расхода</label>
+									</div>
+								</div>					
+							</div>
+							<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop3" type="button" class="btn btn-secondary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										действия
+									</button>
+									<div class="dropdown-menu rounded-0 position-absolute" aria-labelledby="btnGroupDrop3">
+										<label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="createExpenditureState('form')">создать расход по штату</label>
+										<label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="updateExpenditureState('form')">редактировать расход по штату</label>
+										<label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="deleteExpenditureState('form')">удалить расход по штату</label>
+										<label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="createExpenditureList('form')">создать расход по списку</label>
+                                        <label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="updateExpenditureList('form')">редактировать расход по списку</label>
+                                        <label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="deleteExpenditureList('form')">удалить расход по списку</label>
+										<label class="dropdown-item text-break text-wrap" onclick="postExpenditureCurrent('form')">подать расход</label>
+										<label class="dropdown-item text-break text-wrap" onclick="updateExpenditureCurrent('form')" id="manage_update">исправить расход</label>
+										<label class="dropdown-item text-break text-wrap" onclick="showExpenditureCurrent('form')" id="manage_show">просмотреть расход</label>
+										<label th:if = "${user.getRoleSystem()} == 'admin'" class="dropdown-item text-break text-wrap" onclick="getSumExpenditure()">суммарный расход</label>
+									</div>
+								</div>				
+							</div>	
+						</li>
+					</ul>
+				</div>
+				<div class="col-2 rounded-0 m-0 p-0 d-flex align-items-center justify-content-center">
+                    <input id="exit" class="btn btn-secondary text-white rounded-0 w-100" style="border: white 1px solid;" value="Выйти" type="submit" onclick="exit()" />
+				</div>	
+			</div>
+			<div class="row rounded-0 p-0 m-0" id="scene" style="height: 90vh">
+                <div class="col-2 rounded-0 h-100 p-0 m-0" id="setting-select">
+                    <div id="tree-subdivision" class="h-75" style="overflow: auto; padding: 0px 1px 0 1px;">
+                    </div>
+                    <div th:if = "${user.getRoleSystem()} == 'admin'" id="info-expenditure" class="h-25" style="padding: 0px 1px 0 1px; border: 1px solid black;">
+                    </div>
+                </div>
+				<!--<div id="tree-subdivision" class="col-2 pl-3 rounded-0 h-100" style="overflow: auto; padding: 0px 1px 0 1px">
+				</div>-->
+				<div id="content" class="col-10 rounded-0 h-100" style="overflow: auto !important; padding: 1px 1px 1px 1px">
+				</div>
+			</div>
+            <div class="row rounded-0 p-0 m-0" id="">
+                <div id="noticeWindow" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form>
+                                <div class="modal-header">
+                                    <h4 id="theme" class="modal-title"></h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">					
+                                    <p id="definition">Вы уверены, что хотите удалить запись?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <input class="btn btn-default" data-dismiss="modal" value="OK" type="button" onclick="clearContent();getInfoExpenditure()">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+
+		<script id="base" src="/js/base.js"></script>
+		<script th:if = "${user.getRoleSystem()} == 'user'" src="/js/user.js"></script>
+		<script th:if = "${user.getRoleSystem()} == 'admin'" src="/js/admin.js"></script>
+	</body>
+</html>

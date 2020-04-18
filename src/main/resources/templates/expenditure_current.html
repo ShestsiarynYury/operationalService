@@ -1,0 +1,49 @@
+<h2 th:if = "${type} == 'post'" style="text-align : center" th:inline="text">Подача расхода для <span id="nameSubdivisionForCurrentExpenditureModePost">[[${subdivisionName}]]</span> на <span th:inline="text" id="dateNowForExpenditureCurrentPost">[[${dateNow}]]</span></h2>
+<h2 th:if = "${type} == 'edit'" style="text-align : center" th:inline="text">Редактирование расхода для <span id="nameSubdivisionForCurrentExpenditureModeEdit">[[${subdivisionName}]]</span> на <span th:inline="text" id="dateNowForExpenditureCurrentEdit">[[${dateNow}]]</span></h2>
+<h2 th:if = "${type} == 'show'" style="text-align : center" th:inline="text">Просмотр расхода для <span id="nameSubdivisionForCurrentExpenditureModeShow">[[${subdivisionName}]]</span> на <span th:inline="text" id="dateNowForExpenditureCurrentShow">[[${dateNow}]]</span></h2>
+<div class="d-flex justify-content-end">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()" />
+</div>
+<!-- сама форма для расхода "налицо" -->
+<table class="forCategory" th:each="categoryType : ${listCategoryType}"  style="border : 2px black solid; border-collapse : collapse; margin: 0 auto;">
+    <caption style="caption-side : top; text-align : center;" th:text="${categoryType.getName()}"></caption>
+    <thead>
+        <th style="padding : 10px; text-align : center; border : 1px black solid;">наименование категории</th>
+        <th style="padding : 10px; text-align : center; border : 1px black solid;">количество "по штату"</th>
+        <th style="padding : 10px; text-align : center; border : 1px black solid;">количество "по списку"</th>
+        <th style="padding : 10px; text-align : center; border : 1px black solid;">количество "налицо"</th>
+        <th style="padding : 10px; text-align : center; border : 1px black solid;">причины отсутствия</th>
+    </thead>
+    <tbody>
+        <tr th:each="elMap : ${categoryType.getMapCategoryAndCountByExpenditure()}">
+            <td th:text="${elMap.key.getName()}" style="padding : 5px; text-align : center; border : 1px black solid;"></td>
+            <td style="padding : 5px; text-align : center; border : 1px black solid;" th:inline="text">[[${elMap.value[0]}]]</td>
+            <td style="padding : 5px; text-align : center; border : 1px black solid;" th:inline="text">[[${elMap.value[1]}]]</td>
+            <td style="padding : 5px; border : 1px black solid;">
+                <input th:if="${type == 'post'}" class="form-control rounded-0" type="number" min="0" value="0" />
+                <input th:if="${type == 'edit'}" class="form-control rounded-0" type="number" min="0" th:value="${elMap.value[2]}" />
+                <input th:if="${type == 'show'}" class="form-control rounded-0" type="number" min="0" th:value="${elMap.value[2]}" readonly />
+            </td>
+            <td style="border : 1px black solid;">
+                <table style="margin : 0 auto;">
+                    <tbody>
+                        <tr th:each="elAbsence : ${elMap.key.getMapAbsenceAndCountAbsence()}">
+                            <td th:text="${elAbsence.key}"></td>
+                            <td>
+                                <input th:if="${type == 'post'}" class="form-control rounded-0" type="number" min="0" value="0" />
+                                <input th:if="${type == 'edit'}" class="form-control rounded-0" type="number" min="0" th:value="${elAbsence.value}" />
+                                <input th:if="${type == 'show'}" class="form-control rounded-0" type="number" min="0" th:value="${elAbsence.value}" readonly />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<!-- -->
+<div class="d-flex justify-content-end" style="margin : 20px auto 0 auto">
+    <input th:if = "${type} == 'post'" type="button" class="btn btn-secondary rounded-0 m-1" value="подать" onclick="postExpenditureCurrent('action')" />
+    <input th:if = "${type} == 'edit'" type="button" class="btn btn-secondary rounded-0 m-1" value="редактировать" onclick="updateExpenditureCurrent('action')" />
+    <!--<input th:if = "${type} == 'show'" type="button" class="btn btn-secondary rounded-0 m-1" value="" onclick="deleteExpenditureList('action')" />-->
+</div>

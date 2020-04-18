@@ -1,0 +1,53 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+                <h2>управление <b>расходами</b></h2>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>дата и время</th>
+				<th>название подразделения</th>
+                <th>тип</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="expenditure : ${listExpenditure}">
+				<td style="display: none" th:text="${expenditure.getIdExpenditure()}"></td>
+				<td th:text="${expenditure.getDateAndTime()}"></td>
+                <td th:text="${expenditure.getNameSubdivision()}"></td>
+                <td th:text="${expenditure.getTypeExpenditure()}"></td>
+				<td>
+					<a href="#deleteExpenditureModal" class="delete" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="deleteExpenditureModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление расхода</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteExpenditure()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>

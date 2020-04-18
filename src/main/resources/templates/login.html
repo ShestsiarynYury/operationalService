@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" style="height : 100%">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="/webjars/bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <script src="/webjars/jquery/3.3.1/jquery.js"></script>
+        <script src="/webjars/bootstrap/4.1.1/js/bootstrap.js"></script>
+    </head>
+    <body style="height : 100%">
+        <div class="container h-100">
+            <div class="row no-gutters h-100 justify-content-center align-items-center">
+                <div class="col-sm-4 m-auto">
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <h4 class="card-title">Форма входа</h4>
+                        </div>
+                        <div class="card-body">
+                            <div role="alert" id="danger">
+                            </div>
+                            <form method="post" action="/" id="data" accept-charset="utf-8">
+                                <div class="form-group">
+                                    <label for="username">логин:</label>
+                                    <input type="text" class="form-control rounded-0" id="username" placeholder="логин:" name="username" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">пароль:</label>
+                                    <input type="text" class="form-control rounded-0" id="password" placeholder="пароль:" name="password" />
+                                </div>
+                            </form>
+                            <input type="button" class="btn rounded-0 w-100" id="enter" value="войти" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+	<script src="/js/base.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if(this.URL.indexOf('?error=true')>0) {
+                $('#danger').attr('class', 'alert alert-danger');
+                    $('#danger').css('display', 'block');
+                    $('#danger').css('border-radius', '0');
+                    $('.card-body').css('height', '300px');
+                    $('#danger').text('Нет такого пользователя');
+            };
+            if(this.URL.indexOf('?enterError=true')>0) {
+                $('#danger').attr('class', 'alert alert-danger');
+                    $('#danger').css('display', 'block');
+                    $('#danger').css('border-radius', '0');
+                    $('.card-body').css('height', '300px');
+                    $('#danger').text('Такой пользователь уже вошел в систему');
+            };
+            $('#enter').on('click', function (event) {
+                if($('#username').val() == "" && $('#password').val() != "") {
+                    $('#danger').attr('class', 'alert alert-danger');
+                    $('#danger').css('display', 'block');
+                    $('#danger').css('border-radius', '0');
+                    $('.card-body').css('height', '300px');
+                    $('#danger').text('Введите "логин"!');
+                    $('#username').focus();
+                };
+                if($('#password').val() == "" && $('#username').val() != "") {
+                    $('#danger').attr('class', 'alert alert-danger');
+                    $('#danger').css('display', 'block');
+                    $('#danger').css('border-radius', '0');
+                    $('.card-body').css('height', '300px');
+                    $('#danger').text('Введите "пароль"!');
+                    $('#password').focus();
+                };
+                if($('#username').val() == "" && $('#password').val() == "") {
+                    $('#danger').attr('class', 'alert alert-danger');
+                    $('#danger').css('display', 'block');
+                    $('#danger').css('border-radius', '0');
+                    $('.card-body').css('height', '300px');
+                    $('#danger').text('Введите данные: "логин" и "пароль"!');
+                };
+                if($('#username').val() != "" && $('#password').val() != "") {
+                    $('#data').submit();
+                };
+            });
+        });
+    </script>
+</html>

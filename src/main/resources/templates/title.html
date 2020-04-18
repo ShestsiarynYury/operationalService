@@ -1,0 +1,100 @@
+<div class="table-wrapper">
+	<div class="table-title">
+		<div class="row">
+			<div class="col-sm-6">
+			<h2>управление <b>титулы</b></h2>
+			</div>
+			<div class="col-sm-6">
+				<a href="#addTitleModal" class="btn btn-secondary rounded-0" data-toggle="modal" id="modalAddTitle"><span>создать титул</span></a>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+        <thead>
+			<tr>
+				<th style="display: none">идентификатор</th>
+				<th>наименование</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="title : ${listTitle}">
+				<td style="display: none" th:text="${title.getId()}"></td>
+				<td th:text="${title.getName()}"></td>
+				<td>
+					<a href="#editTitleModal" class="edit" data-toggle="modal" id="modalUpdateTitle">редактировать</a>
+					<a href="#deleteTitleModal" class="delete" data-toggle="modal">удалить</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+	   
+<div id="addTitleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">добавление титула</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input class="form-control" type="text" id="nameTitle">
+					</div>				
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-success" data-dismiss="modal" value="Добавить" type="button" onclick="addTitle()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="editTitleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">редактировать титул</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<div class="form-group">
+						<label>наименование</label>
+						<input id="editNameTitle" class="form-control" type="text">
+					</div>		
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-info" data-dismiss="modal" value="Сохранить" type="button" onclick="updateTitle()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="deleteTitleModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">
+					<h4 class="modal-title">удаление титула</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">					
+					<p>Вы уверены, что хотите удалить запись?</p>
+					<p class="text-warning"><small>Это дейтсвие не может быть отменено.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input class="btn btn-default" data-dismiss="modal" value="Отменить" type="button">
+					<input class="btn btn-danger" data-dismiss="modal" value="Удалить" type="button" onclick="deleteTitle()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>

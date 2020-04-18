@@ -1,0 +1,23 @@
+<h6 style="text-align: center">информация о расходах</h6>
+<!-- отобразить по штату -->
+<div style="border: 1px solid black;" class="row no-gutters p-0 mb-1">
+    <div class="col-9">по штату : </div>
+    <div th:if="${state} != null" style="border: 1px solid black; background-color: lawngreen;" class="col-2 my-2 d-flex justify-content-center"></div>
+    <div th:unless="${state} != null" style="border: 1px solid black; background-color: red;" class="col-2 my-2 d-flex justify-content-center"></div>
+</div>
+<!-- отобразить по списку -->
+<div style="border: 1px solid black;" class="row no-gutters p-0 mb-1">
+    <div class="col-9">по списку : </div>
+    <div th:if="${list} != null" style="border: 1px solid black; background-color: lawngreen;" class="col-2 my-2 d-flex justify-content-center"></div>
+    <div th:unless="${list} != null" style="border: 1px solid black; background-color: red;" class="col-2 my-2 d-flex justify-content-center"></div>
+</div>
+<!-- за текущую дату -->
+<div style="border: 1px solid black;" class="row no-gutters p-0 mb-1">
+    <div class="col-9">на текущую дату : </div>
+    <div th:if="${current} != null" style="border: 1px solid black; background-color: lawngreen;" class="col-2 my-2 d-flex justify-content-center"></div>
+    <div th:unless="${current} != null" style="border: 1px solid black; background-color: red;" class="col-2 my-2 d-flex justify-content-center"></div>
+</div>
+<!-- TEST получать за выбранную дату 
+    // здесь будет элемент управления 'date' -> выбор даты
+    // кнопка 'выбрать расход' -> будет отображать расход на текущую дату
+-->

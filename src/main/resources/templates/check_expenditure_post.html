@@ -1,0 +1,9 @@
+<h2>Проверка подачи расхода подразделениями на <span th:inline="text">[[${dateNow}]]</span></h2>
+<div class="d-flex justify-content-center">
+    <input type="button" class="btn btn-secondary rounded-0 m-1" value="закрыть" onclick="clearContent()">
+</div>
+<div style="border: 1px solid black;" th:each="item : ${list}" class="row no-gutters p-2 mb-1">
+    <div th:text="${item.getName()}" class="col-9"></div>
+    <div th:if="${item.getPost()} == '1'" style="border: 1px solid black; background-color: lawngreen;" class="col-3 d-flex justify-content-center">подано</div>
+    <div th:if="${item.getPost()} == '0'" style="border: 1px solid black; background-color: red;" class="col-3 d-flex justify-content-center">нет</div>
+</div>

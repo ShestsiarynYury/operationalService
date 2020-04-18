@@ -1,0 +1,7 @@
+<ul th:fragment="fragment_node(listSubdivision)" th:unless="${#lists.isEmpty(listSubdivision)}">
+	<li th:each="child : ${listSubdivision}" th:inline="text">
+		<label>[[${child.getName()}]]</label>
+		<ul th:replace="this::fragment_node(${child.getChildren()})"></ul>
+	</li>
+</ul>
+
